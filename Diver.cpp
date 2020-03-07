@@ -7,6 +7,8 @@
 #include "Game.h"
 using namespace std;
 
+const int MIN_UNIQUE = 32;
+
 Diver::Diver() {
     m_myName = "Player";
     m_numMaterials = 0;
@@ -54,18 +56,12 @@ void Diver::IncrementQuantity(Material item) {
             m_myMaterials[i].m_quantity += 1;
         }
     }
-    //m_myMaterials[m_numMaterials].m_quantity += 1;
 }
 
 
 
 bool Diver::DecrementQuantity(Material item) {
     if (item.m_quantity > 0) {
-        for (int x = 0; x < PROJ2_SIZE; x++) {
-            if (item.m_name == m_myMaterials[x].m_name) {
-                m_myMaterials[x].m_quantity -= 1;
-            }
-        }
         return true;
     }
     else {
@@ -84,22 +80,15 @@ bool Diver::CheckQuantity(Material item_a, Material item_b) {
 }
 
 Material Diver::GetMaterial(int index) {
-    //m_numMaterials = index;
     return m_myMaterials[index];
 }
 
 int Diver::CalcDepth() {
     int sum = 0;
-    for (int i = 32; i < PROJ2_SIZE; i++) {
+    for (int i = MIN_UNIQUE; i < PROJ2_SIZE; i++) {
         if (m_myMaterials[i].m_quantity > 0) {
             sum += (m_myMaterials[i].m_depth * m_myMaterials[i].m_quantity);
         }
     }
     return sum;
 }
-
-
-/*private:
-    string m_myName; Name of Diver
-    int m_numMaterials; Current number of items in m_myMaterials known to diver
-    Material m_myMaterials[PROJ2_SIZE] = {}; List of materials known to this diver*/
