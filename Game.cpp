@@ -1,3 +1,22 @@
+/***********************************************************
+** File: Game.cpp
+**
+** Project: CMSC 202 Project 2, Spring 2020
+** 
+** Author: Rooklyn Kline
+** 
+** Date: 3/10/2020
+**
+** Section: 23
+**
+** E-mail: rkline2@umbc.edu
+**
+** This file contains all of the functions in the Game class
+** that helps run the game. It runs all of the programs the  
+** user will be interacting. It makes sure all of the imputed   
+** data is valid including the combine-materials functions. 
+**
+************************************************************/
 #include "Game.h"
 #include "Diver.h"
 
@@ -7,25 +26,28 @@
 #include <ctime>
 using namespace std;
 
-const int INVALID = -1;
-const int MAX_MENU = 6;
+const int INVALID = -1; // Represents data that is invalid
+const int MAX_MENU = 6; // Main menu input validation
 
-const int TOO_MANY_UNIQUE = -10;
+const int TOO_MANY_UNIQUE = -10; // A unique material made more than once
 
-const int DISPLAY_MAT = 1;
-const int SEARCH_RAW = 2;
-const int MERGE_MAT = 3;
-const int SEE_SCORE = 4;
-const int QUIT = 5;
-const int FIRST_ELM = 17;
+const int DISPLAY_MAT = 1; // *
+const int SEARCH_RAW = 2;  // *
+const int MERGE_MAT = 3;   // * Menu options
+const int SEE_SCORE = 4;   // *
+const int QUIT = 5;        // *
 
-const int LUBRICANT = 28;
-const int SILICONE_RUBBER = 30;
+const int FIRST_ELM = 17; // Materials index that can be combined  
+const int LUBRICANT = 28;                       // *   
+const int SILICONE_RUBBER = 30;                 // * Special material classification 
+const string SPCASE = "Creepvine Seed Cluster"; // *
 
-const string UNIQUE_MAT = "unique";
-const string SPCASE = "Creepvine Seed Cluster";
+const string UNIQUE_MAT = "unique"; // Represents unique materials
 
 
+// Default Constructor: Game
+// Loads all of the materials from the .txt file
+// and asks for the Diver's name 
 Game::Game() {
     string newName = "";
     LoadMaterials();
@@ -37,6 +59,9 @@ Game::Game() {
     m_myDiver.SetName(newName);
 }
 
+// LoadMaterials
+// Copies all of the data in the .txt file to
+// m_materials and m_myMaterials 
 void Game::LoadMaterials() {
     string name = "";
     string matType = "";
@@ -68,12 +93,14 @@ void Game::LoadMaterials() {
     getItem.close();
 }
 
+// StartGame
+// Continuously runs the game until the user wins or exits  
 void Game::StartGame() {
     GameTitle();
     int usrInpt = 0;
     int count_ = 0;
     int setCount = 0;
-    cout << "How many times to you want items?: ";
+    cout << "How many items to you want?: ";
     cin >> setCount;
     do
     {
@@ -107,9 +134,12 @@ void Game::StartGame() {
         count_++;
         cout << endl;
     } while (usrInpt != QUIT);
-    cout << "Thanks for playing " << m_myDiver.GetName() << "!" << endl;
+    cout << "Thanks for playing Subnautica " << m_myDiver.GetName() << "!" << endl;
 }
 
+
+// DisplayMaterials
+// Displays all of the current materials in m_materials
 void Game::DisplayMaterials() {
     cout << m_myDiver.GetName() << " displays current materials!" << endl;
     for (int i = 0; i < PROJ2_SIZE; i++) {
@@ -118,10 +148,13 @@ void Game::DisplayMaterials() {
     }
 }
 
+// MainMenu
+// Displays a menu option for the user and retuns a value
+// the user would like to go to
 int Game::MainMenu() {
     int userNum = -1;
     int currentDepth = m_myDiver.CalcDepth();
-    cout << "Current Score is: " << currentDepth << endl;
+    //cout << "Current Score is: " << currentDepth << endl;
     if (currentDepth < MAX_DEPTH) {
         cout << "What would " << m_myDiver.GetName() << " like to do?" << endl;
         cout << "1. Display your Diver's Materials" << endl;
@@ -131,7 +164,6 @@ int Game::MainMenu() {
         cout << "5. Quit" << endl;
         cin >> userNum;
         if (userNum < 1 || userNum > MAX_MENU) {
-            cout << "Invalid Input" << endl;
             userNum = INVALID;
         }
     }
@@ -143,6 +175,9 @@ int Game::MainMenu() {
     return userNum;
 }
 
+// SearchMaterials
+// Randomly selects a raw material and adds it to the
+// players collection
 void Game::SearchMaterials() {
     srand(time(NULL));
     int randIndex = rand() % 17;
@@ -158,6 +193,9 @@ void Game::SearchMaterials() {
     m_materials[randIndex].m_quantity += 1;
 }
 
+// CombineMaterials
+// Attempts to combine the two materials. Runs through a series
+// of validations before manipulating the material arrays 
 void Game::CombineMaterials() {
     int item_a = INVALID;
     int item_b = INVALID;
@@ -236,14 +274,15 @@ void Game::CombineMaterials() {
     }
 }
 
+// RequestMaterial
+// Asks the user for two materials to merge
 void Game::RequestMaterial(int& choice) {
     cout << "Which materials would you like to merge?" << endl;
     cout << "To list known materials, enter -1" << endl;
     cin >> choice;
     if (choice == INVALID) {
-        
+      // Displays KNOWN materials
         m_myDiver.DisplayMaterials();
-        //DisplayMaterials();
     }
     else if (choice <= 0 || choice > PROJ2_SIZE) {
         choice = INVALID;
@@ -252,7 +291,9 @@ void Game::RequestMaterial(int& choice) {
     --choice;
 }
 
-
+// SearchRecipes
+// Given the two material names, returns an index value
+// of the combined material if true. Otherwise returns a invalid statement. 
 int Game::SearchRecipes(string itemA, string itemB) {
     if (itemA == SPCASE && itemB == SPCASE) {
         int choice = INVALID;
@@ -276,6 +317,7 @@ int Game::SearchRecipes(string itemA, string itemB) {
         string testMatB = m_myDiver.GetMaterial(index).m_material2;
         int itemQuant = m_myDiver.GetMaterial(index).m_quantity;
         string itemType = m_myDiver.GetMaterial(index).m_type;
+	// Makes sure that both items don't equal ONLY ONE m_material  
         if ((((itemA == testMatA && itemB != testMatA) || (itemA == testMatB && itemB != testMatB))
             && ((itemB == testMatA && itemA != testMatA) || (itemB == testMatB && itemA != testMatB))) ||
             ((itemA == itemB) && (itemA == testMatA && itemB == testMatB))) {
@@ -295,9 +337,12 @@ int Game::SearchRecipes(string itemA, string itemB) {
     return INVALID;
 }
 
+// CalcScore
+// Calculates and displays the current
+// score for the player 
 void Game::CalcScore() {
     int currentDepth = m_myDiver.CalcDepth();
-    cout << "Current Depth: " << currentDepth << endl;
+    cout << endl << "Current Depth: " << currentDepth << endl;
 }
 
 
