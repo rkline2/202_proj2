@@ -101,6 +101,7 @@ bool Diver::DecrementQuantity(Material item) {
     }
     else {
         m_myMaterials[CheckMaterial(item)].m_quantity--;
+        return true;
     }
 }
 
