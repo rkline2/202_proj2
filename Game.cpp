@@ -7,15 +7,12 @@
 #include <ctime>
 using namespace std;
 
-
-
 // Default Constructor: Game
 // Loads all of the materials from the .txt file
 // and asks for the Diver's name
 Game::Game() {
     string newName = "";
     LoadMaterials();
-    cout << "MAKE SURE TO DELETE ONE-SEC FUNCT WHEN DONE" << endl;
     cout << "50 materials loaded..." << endl;
     cout << "What is the name of your diver?: ";
     cin >> newName;
@@ -62,8 +59,6 @@ void Game::LoadMaterials() {
 void Game::StartGame() {
     GameTitle();
     int usrInpt = 0;
-    int count_ = 0;
-    int setCount = 0;
     //cout << "How many times to you want items?: ";
     //cin >> setCount;
     do
@@ -97,7 +92,6 @@ void Game::StartGame() {
             usrInpt = INVALID;
             break;
         }
-        count_++;
         cout << endl;
     } while (usrInpt != QUIT);
     cout << "Thanks for playing " << m_myDiver.GetName() << "!" << endl;
