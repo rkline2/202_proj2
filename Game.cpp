@@ -7,20 +7,7 @@
 #include <ctime>
 using namespace std;
 
-const int INVALID = -1; // Represents data that is invalid
-const int MAX_MENU = 6; // Main menu input validation
 
-const int TOO_MANY_UNIQUE = -10; // A unique material made more than once
-
-const int DISPLAY_MAT = 1; // *
-const int SEARCH_RAW = 2;  // *
-const int MERGE_MAT = 3;   // * Menu options
-const int SEE_SCORE = 4;   // *
-const int QUIT = 5;        // *
-
-const int FIRST_ELM = 17; // Materials index that can be combined
-
-const string UNIQUE_MAT = "unique"; // Represents unique materials
 
 // Default Constructor: Game
 // Loads all of the materials from the .txt file
