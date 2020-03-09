@@ -28,10 +28,6 @@
 #include "Game.h"
 using namespace std;
 
-const int MIN_UNIQUE = 32; // Unique item index 
-const int INVALID = 1; // Invalid input
-const int TWO_VAL = 2; // Represents the same two index value
-
 // Default Constructor: Diver
 // Automatically builds a new diver
 Diver::Diver() {
