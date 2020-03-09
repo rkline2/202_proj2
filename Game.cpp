@@ -7,23 +7,6 @@
 #include <ctime>
 using namespace std;
 
-<<<<<<< HEAD
-const int INVALID = -1; // Represents data that is invalid
-const int MAX_MENU = 6; // Main menu input validation
-
-const int TOO_MANY_UNIQUE = -10; // A unique material made more than once
-
-const int DISPLAY_MAT = 1; // *
-const int SEARCH_RAW = 2;  // *
-const int MERGE_MAT = 3;   // * Menu options
-const int SEE_SCORE = 4;   // *
-const int QUIT = 5;        // *
-
-const int FIRST_ELM = 17; // Materials index that can be combined  
-
-const string UNIQUE_MAT = "unique"; // Represents unique materials
-=======
->>>>>>> 732701264f49a184389926682adf96c0c20d2bb9
 
 
 // Default Constructor: Game
@@ -32,6 +15,7 @@ const string UNIQUE_MAT = "unique"; // Represents unique materials
 Game::Game() {
     string newName = "";
     LoadMaterials();
+    cout << "MAKE SURE TO DELETE ONE-SEC FUNCT WHEN DONE" << endl;
     cout << "50 materials loaded..." << endl;
     cout << "What is the name of your diver?: ";
     cin >> newName;
@@ -78,12 +62,6 @@ void Game::LoadMaterials() {
 void Game::StartGame() {
     GameTitle();
     int usrInpt = 0;
-<<<<<<< HEAD
-    do
-    {
-        usrInpt = MainMenu();
-        
-=======
     int count_ = 0;
     int setCount = 0;
     //cout << "How many times to you want items?: ";
@@ -98,17 +76,13 @@ void Game::StartGame() {
             usrInpt = MainMenu();
         }*/
         usrInpt = MainMenu();
->>>>>>> 732701264f49a184389926682adf96c0c20d2bb9
         switch (usrInpt)
         {
         case DISPLAY_MAT:
             DisplayMaterials();
             break;
         case SEARCH_RAW:
-<<<<<<< HEAD
-=======
             //OneSec(20000);
->>>>>>> 732701264f49a184389926682adf96c0c20d2bb9
             SearchMaterials();
             break;
         case MERGE_MAT:
@@ -123,6 +97,7 @@ void Game::StartGame() {
             usrInpt = INVALID;
             break;
         }
+        count_++;
         cout << endl;
     } while (usrInpt != QUIT);
     cout << "Thanks for playing " << m_myDiver.GetName() << "!" << endl;
@@ -172,7 +147,7 @@ void Game::SearchMaterials() {
     cout << m_materials[randIndex].m_name << " found!" << endl;
     cout << m_myDiver.GetName() << " added " << m_materials[randIndex].m_name;
     cout << " to " << m_myDiver.GetName() << "'s materials!" << endl;
-    
+
     // Incremants the m_mymaterials list
     m_myDiver.IncrementQuantity(m_materials[randIndex]);
 
@@ -207,7 +182,7 @@ void Game::CombineMaterials() {
 
     // Checks if there is a valid recipe
     item_c = SearchRecipes(aName, bName);
-    
+
     if (item_c == TOO_MANY_UNIQUE) {
         cout << m_myDiver.GetName() << " has already made this unique material!" << endl;
     }
@@ -219,20 +194,6 @@ void Game::CombineMaterials() {
         cout << m_myDiver.GetMaterial(item_c).m_name << "!" << endl;
     }
     else if ((item_c != INVALID && hasMaterials) && (item_c != TOO_MANY_UNIQUE)) {
-<<<<<<< HEAD
-        if (m_materials[item_a].m_quantity - 1 >= 0) {
-             cout << m_myDiver.GetName() << " tries to combine " << aName << " and " << bName << "!" << endl;
-            // Only decrement quantity for m_material
-            m_materials[item_a].m_quantity -= 1;
-            if (m_materials[item_b].m_quantity - 1 >= 0) {
-
-                // Only decrement quantity for m_material
-                m_materials[item_b].m_quantity -= 1;
-
-                // Increment quantity for new material for m_material and and m_mymaterial
-                m_myDiver.IncrementQuantity(m_materials[item_c]);
-                m_materials[item_c].m_quantity += 1;
-=======
         cout << m_myDiver.GetName() << " tries to combine " << aName << " and " << bName << "!" << endl;
         // made changes here
         // Only decrement quantity for m_Mymaterial
@@ -241,7 +202,6 @@ void Game::CombineMaterials() {
 
                 // Increment quantity for new material for m_material and and m_mymaterial
                 m_myDiver.IncrementQuantity(m_materials[item_c]);
->>>>>>> 732701264f49a184389926682adf96c0c20d2bb9
 
                 // Display the successful merge 
                 cout << m_myDiver.GetName() << " has crafted " << m_myDiver.GetMaterial(item_c).m_name;
@@ -252,7 +212,7 @@ void Game::CombineMaterials() {
                 cout << m_myDiver.GetName() << " doesn't have enough materials to make ";
                 cout << m_myDiver.GetMaterial(item_c).m_name << "!" << endl;
             }
-         }
+        }
     }
 }
 
@@ -264,7 +224,7 @@ void Game::RequestMaterial(int& choice) {
     cout << "To list known materials, enter -1" << endl;
     cin >> choice;
     if (choice == INVALID) {
-        
+
         m_myDiver.DisplayMaterials();
     }
     else if (choice <= 0 || choice > PROJ2_SIZE) {
@@ -290,7 +250,7 @@ int Game::SearchRecipes(string itemA, string itemB) {
             if (itemType == UNIQUE_MAT && itemQuant == 0) {
                 return index;
             }
-            
+
             else if (itemType == UNIQUE_MAT && itemQuant > 0) {
                 return TOO_MANY_UNIQUE;
             }
