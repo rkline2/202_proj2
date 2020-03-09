@@ -38,9 +38,6 @@ const int SEE_SCORE = 4;   // *
 const int QUIT = 5;        // *
 
 const int FIRST_ELM = 17; // Materials index that can be combined  
-const int LUBRICANT = 28;                       // *   
-const int SILICONE_RUBBER = 30;                 // * Special material classification 
-const string SPCASE = "Creepvine Seed Cluster"; // *
 
 const string UNIQUE_MAT = "unique"; // Represents unique materials
 
@@ -51,7 +48,6 @@ const string UNIQUE_MAT = "unique"; // Represents unique materials
 Game::Game() {
     string newName = "";
     LoadMaterials();
-    cout << "MAKE SURE TO DELETE ONE-SEC FUNCT WHEN DONE" << endl;
     cout << "50 materials loaded..." << endl;
     cout << "What is the name of your diver?: ";
     cin >> newName;
@@ -98,25 +94,16 @@ void Game::LoadMaterials() {
 void Game::StartGame() {
     GameTitle();
     int usrInpt = 0;
-    int count_ = 0;
-    int setCount = 0;
-    cout << "How many items to you want?: ";
-    cin >> setCount;
     do
     {
-        if (count_ < setCount) {
-            usrInpt = 2;
-        }
-        else {
-            usrInpt = MainMenu();
-        }
+        usrInpt = MainMenu();
+        
         switch (usrInpt)
         {
         case DISPLAY_MAT:
             DisplayMaterials();
             break;
         case SEARCH_RAW:
-            OneSec(20000);
             SearchMaterials();
             break;
         case MERGE_MAT:
@@ -131,7 +118,6 @@ void Game::StartGame() {
             usrInpt = INVALID;
             break;
         }
-        count_++;
         cout << endl;
     } while (usrInpt != QUIT);
     cout << "Thanks for playing Subnautica " << m_myDiver.GetName() << "!" << endl;
@@ -154,7 +140,6 @@ void Game::DisplayMaterials() {
 int Game::MainMenu() {
     int userNum = -1;
     int currentDepth = m_myDiver.CalcDepth();
-    //cout << "Current Score is: " << currentDepth << endl;
     if (currentDepth < MAX_DEPTH) {
         cout << "What would " << m_myDiver.GetName() << " like to do?" << endl;
         cout << "1. Display your Diver's Materials" << endl;
@@ -230,25 +215,8 @@ void Game::CombineMaterials() {
         cout << m_myDiver.GetName() << " doesn't have enough materials to make ";
         cout << m_myDiver.GetMaterial(item_c).m_name << "!" << endl;
     }
-    else if ((item_c != INVALID && hasMaterials) || (item_c != TOO_MANY_UNIQUE)) {
-         if (item_c == LUBRICANT) {
-             cout << m_myDiver.GetName() << " tries to use " << aName << "!" << endl;
-            if (m_materials[item_a].m_quantity - 1 >= 0) {
-
-                // Only decrement quantity for m_material
-                m_materials[item_a].m_quantity -= 1;
-
-                // Increment quantity for new material for m_material and and m_mymaterial
-                m_myDiver.IncrementQuantity(m_materials[item_c]);
-                m_materials[item_c].m_quantity += 1;
-
-                // Display the successful merge 
-                cout << m_myDiver.GetName() << " has crafted " << m_myDiver.GetMaterial(item_c).m_name;
-                cout << " (+" << m_myDiver.GetMaterial(item_c).m_depth << " depth added)!" << endl;
-            }
-         }
-        
-        else if ((m_materials[item_a].m_quantity - 1 >= 0) && item_c != LUBRICANT) {
+    else if ((item_c != INVALID && hasMaterials) && (item_c != TOO_MANY_UNIQUE)) {
+        if (m_materials[item_a].m_quantity - 1 >= 0) {
              cout << m_myDiver.GetName() << " tries to combine " << aName << " and " << bName << "!" << endl;
             // Only decrement quantity for m_material
             m_materials[item_a].m_quantity -= 1;
@@ -295,23 +263,6 @@ void Game::RequestMaterial(int& choice) {
 // Given the two material names, returns an index value
 // of the combined material if true. Otherwise returns a invalid statement. 
 int Game::SearchRecipes(string itemA, string itemB) {
-    if (itemA == SPCASE && itemB == SPCASE) {
-        int choice = INVALID;
-        cout << "It appears that " << m_myDiver.GetName();
-        cout << " can craft either Lubricant or Silicone Rubber!" << endl;
-        cout << "Which material would " << m_myDiver.GetName() << " like to craft (enter 1 for Lubricant or 2 for Silicone Rubber)?: ";
-        cin >> choice;
-        while (choice != 1 && choice != 2) {
-            cout << "Which would material" << m_myDiver.GetName() << " like to craft (enter 1 for Lubricant or 2 for Silicone Rubber)?: ";
-            cin >> choice;
-        }
-        if (choice == 1) {
-            return LUBRICANT;
-        }
-        else {
-            return SILICONE_RUBBER;
-        }
-    }
     for (int index = FIRST_ELM; index < PROJ2_SIZE; index++) {
         string testMatA = m_myDiver.GetMaterial(index).m_material1;
         string testMatB = m_myDiver.GetMaterial(index).m_material2;
@@ -345,12 +296,3 @@ void Game::CalcScore() {
     cout << endl << "Current Depth: " << currentDepth << endl;
 }
 
-
-void Game::OneSec(int len) {
-    for (int x = 0; x < len; x++) {
-        for (int y = 0; y < len; y++) {
-            {}
-        }
-    }
-
-}
