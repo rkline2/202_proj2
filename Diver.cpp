@@ -28,8 +28,6 @@
 #include "Game.h"
 using namespace std;
 
-const int MIN_UNIQUE = 32; // Unique item index 
-
 // Default Constructor: Diver
 // Automatically builds a new diver
 Diver::Diver() {
@@ -60,7 +58,7 @@ void Diver::SetName(string name) {
 // DisplayMaterials
 // Displays the known materials from the player 
 void Diver::DisplayMaterials() {
-    for (int i = 0; i < PROJ2_SIZE; i++) {
+   for (int i = 0; i < PROJ2_SIZE; i++) {
         cout << i + 1 << ". " << m_myMaterials[i].m_name;
         cout << " " << m_myMaterials[i].m_quantity << endl;
     }
@@ -70,13 +68,12 @@ void Diver::DisplayMaterials() {
 // Given the material, returns the index
 // if the quantity is greater than zero
 int Diver::CheckMaterial(Material item) {
-    int invalid = -1;
     for (int index = 0; index < PROJ2_SIZE; index++) {
-        if ((m_myMaterials[index].m_name == item.m_name) && (m_myMaterials[index].m_quantity > 0)) {
+        if (m_myMaterials[index].m_name == item.m_name) {
             return index;
         }
     }
-    return invalid;
+    return INVALID;
 }
 
 // AddMaterial
@@ -92,22 +89,19 @@ void Diver::AddMaterial(Material item) {
 // Given the material, increments the material's
 // quantity by one
 void Diver::IncrementQuantity(Material item) {
-    for (int i = 0; i < PROJ2_SIZE; i++) {
-        if (item.m_name == m_myMaterials[i].m_name) {
-            m_myMaterials[i].m_quantity += 1;
-        }
-    }
+        m_myMaterials[CheckMaterial(item)].m_quantity++;
 }
 
 // DecrementQuantity
 // Given the material, returns true if the
 // materials quantity is greater than zero
 bool Diver::DecrementQuantity(Material item) {
-    if (item.m_quantity > 0) {
-        return true;
+    if (m_myMaterials[CheckMaterial(item)].m_quantity <= 0) {
+        return false;
     }
     else {
-        return false;
+        m_myMaterials[CheckMaterial(item)].m_quantity--;
+        return true;
     }
 }
 
@@ -118,7 +112,7 @@ bool Diver::CheckQuantity(Material item_a, Material item_b) {
     if (item_a.m_quantity == 0 || item_b.m_quantity == 0) {
         return false;
     }
-    else if ((item_a.m_name == item_b.m_name) && item_a.m_quantity < 2) {
+    else if ((item_a.m_name == item_b.m_name) && item_a.m_quantity < TWO_VAL) {
         return false;
     }
     return true;

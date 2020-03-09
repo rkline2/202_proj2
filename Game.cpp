@@ -1,22 +1,3 @@
-/***********************************************************
-** File: Game.cpp
-**
-** Project: CMSC 202 Project 2, Spring 2020
-** 
-** Author: Rooklyn Kline
-** 
-** Date: 3/10/2020
-**
-** Section: 23
-**
-** E-mail: rkline2@umbc.edu
-**
-** This file contains all of the functions in the Game class
-** that helps run the game. It runs all of the programs the  
-** user will be interacting. It makes sure all of the imputed   
-** data is valid including the combine-materials functions. 
-**
-************************************************************/
 #include "Game.h"
 #include "Diver.h"
 
@@ -26,6 +7,7 @@
 #include <ctime>
 using namespace std;
 
+<<<<<<< HEAD
 const int INVALID = -1; // Represents data that is invalid
 const int MAX_MENU = 6; // Main menu input validation
 
@@ -40,11 +22,13 @@ const int QUIT = 5;        // *
 const int FIRST_ELM = 17; // Materials index that can be combined  
 
 const string UNIQUE_MAT = "unique"; // Represents unique materials
+=======
+>>>>>>> 732701264f49a184389926682adf96c0c20d2bb9
 
 
 // Default Constructor: Game
 // Loads all of the materials from the .txt file
-// and asks for the Diver's name 
+// and asks for the Diver's name
 Game::Game() {
     string newName = "";
     LoadMaterials();
@@ -57,7 +41,7 @@ Game::Game() {
 
 // LoadMaterials
 // Copies all of the data in the .txt file to
-// m_materials and m_myMaterials 
+// m_materials and m_myMaterials
 void Game::LoadMaterials() {
     string name = "";
     string matType = "";
@@ -90,20 +74,41 @@ void Game::LoadMaterials() {
 }
 
 // StartGame
-// Continuously runs the game until the user wins or exits  
+// Continuously runs the game until the user wins or exits
 void Game::StartGame() {
     GameTitle();
     int usrInpt = 0;
+<<<<<<< HEAD
     do
     {
         usrInpt = MainMenu();
         
+=======
+    int count_ = 0;
+    int setCount = 0;
+    //cout << "How many times to you want items?: ";
+    //cin >> setCount;
+    do
+    {
+        /*
+        if (count_ < setCount) {
+            usrInpt = 2;
+        }
+        else {
+            usrInpt = MainMenu();
+        }*/
+        usrInpt = MainMenu();
+>>>>>>> 732701264f49a184389926682adf96c0c20d2bb9
         switch (usrInpt)
         {
         case DISPLAY_MAT:
             DisplayMaterials();
             break;
         case SEARCH_RAW:
+<<<<<<< HEAD
+=======
+            //OneSec(20000);
+>>>>>>> 732701264f49a184389926682adf96c0c20d2bb9
             SearchMaterials();
             break;
         case MERGE_MAT:
@@ -120,18 +125,14 @@ void Game::StartGame() {
         }
         cout << endl;
     } while (usrInpt != QUIT);
-    cout << "Thanks for playing Subnautica " << m_myDiver.GetName() << "!" << endl;
+    cout << "Thanks for playing " << m_myDiver.GetName() << "!" << endl;
 }
-
 
 // DisplayMaterials
 // Displays all of the current materials in m_materials
 void Game::DisplayMaterials() {
     cout << m_myDiver.GetName() << " displays current materials!" << endl;
-    for (int i = 0; i < PROJ2_SIZE; i++) {
-        cout << i + 1 << ". " << m_materials[i].m_name;
-        cout << " " << m_materials[i].m_quantity << endl;
-    }
+    m_myDiver.DisplayMaterials();
 }
 
 // MainMenu
@@ -149,6 +150,7 @@ int Game::MainMenu() {
         cout << "5. Quit" << endl;
         cin >> userNum;
         if (userNum < 1 || userNum > MAX_MENU) {
+            cout << "Invalid Input" << endl;
             userNum = INVALID;
         }
     }
@@ -175,12 +177,12 @@ void Game::SearchMaterials() {
     m_myDiver.IncrementQuantity(m_materials[randIndex]);
 
     // Increments the m_materials list  
-    m_materials[randIndex].m_quantity += 1;
+    //m_materials[randIndex].m_quantity += 1;
 }
 
 // CombineMaterials
 // Attempts to combine the two materials. Runs through a series
-// of validations before manipulating the material arrays 
+// of validations before manipulating the material arrays
 void Game::CombineMaterials() {
     int item_a = INVALID;
     int item_b = INVALID;
@@ -198,9 +200,10 @@ void Game::CombineMaterials() {
     string aName = m_myDiver.GetMaterial(item_a).m_name;
     string bName = m_myDiver.GetMaterial(item_b).m_name;
 
-
+    m_myDiver.CheckMaterial(m_materials[item_a]);
     // Checks if the quantities are all good for both materials 
-    bool hasMaterials = m_myDiver.CheckQuantity(m_materials[item_a], m_materials[item_b]);
+    // Made changes here
+    bool hasMaterials = m_myDiver.CheckQuantity(m_myDiver.GetMaterial(item_a), m_myDiver.GetMaterial(item_b));
 
     // Checks if there is a valid recipe
     item_c = SearchRecipes(aName, bName);
@@ -216,6 +219,7 @@ void Game::CombineMaterials() {
         cout << m_myDiver.GetMaterial(item_c).m_name << "!" << endl;
     }
     else if ((item_c != INVALID && hasMaterials) && (item_c != TOO_MANY_UNIQUE)) {
+<<<<<<< HEAD
         if (m_materials[item_a].m_quantity - 1 >= 0) {
              cout << m_myDiver.GetName() << " tries to combine " << aName << " and " << bName << "!" << endl;
             // Only decrement quantity for m_material
@@ -228,19 +232,30 @@ void Game::CombineMaterials() {
                 // Increment quantity for new material for m_material and and m_mymaterial
                 m_myDiver.IncrementQuantity(m_materials[item_c]);
                 m_materials[item_c].m_quantity += 1;
+=======
+        cout << m_myDiver.GetName() << " tries to combine " << aName << " and " << bName << "!" << endl;
+        // made changes here
+        // Only decrement quantity for m_Mymaterial
+        if (m_myDiver.DecrementQuantity(m_materials[item_a])) {
+            if (m_myDiver.DecrementQuantity(m_materials[item_b])) {
+
+                // Increment quantity for new material for m_material and and m_mymaterial
+                m_myDiver.IncrementQuantity(m_materials[item_c]);
+>>>>>>> 732701264f49a184389926682adf96c0c20d2bb9
 
                 // Display the successful merge 
                 cout << m_myDiver.GetName() << " has crafted " << m_myDiver.GetMaterial(item_c).m_name;
                 cout << " (+" << m_myDiver.GetMaterial(item_c).m_depth << " depth added)!" << endl;
             }
             else {
-                m_materials[item_a].m_quantity += 1;
+                m_myDiver.IncrementQuantity(m_materials[item_a]);
                 cout << m_myDiver.GetName() << " doesn't have enough materials to make ";
                 cout << m_myDiver.GetMaterial(item_c).m_name << "!" << endl;
             }
          }
     }
 }
+
 
 // RequestMaterial
 // Asks the user for two materials to merge
@@ -249,7 +264,7 @@ void Game::RequestMaterial(int& choice) {
     cout << "To list known materials, enter -1" << endl;
     cin >> choice;
     if (choice == INVALID) {
-      // Displays KNOWN materials
+        
         m_myDiver.DisplayMaterials();
     }
     else if (choice <= 0 || choice > PROJ2_SIZE) {
@@ -261,14 +276,14 @@ void Game::RequestMaterial(int& choice) {
 
 // SearchRecipes
 // Given the two material names, returns an index value
-// of the combined material if true. Otherwise returns a invalid statement. 
+// of the combined material if true. Otherwise returns a invalid statement.
 int Game::SearchRecipes(string itemA, string itemB) {
     for (int index = FIRST_ELM; index < PROJ2_SIZE; index++) {
         string testMatA = m_myDiver.GetMaterial(index).m_material1;
         string testMatB = m_myDiver.GetMaterial(index).m_material2;
         int itemQuant = m_myDiver.GetMaterial(index).m_quantity;
         string itemType = m_myDiver.GetMaterial(index).m_type;
-	// Makes sure that both items don't equal ONLY ONE m_material  
+        // Makes sure that both items don't equal ONLY ONE m_material
         if ((((itemA == testMatA && itemB != testMatA) || (itemA == testMatB && itemB != testMatB))
             && ((itemB == testMatA && itemA != testMatA) || (itemB == testMatB && itemA != testMatB))) ||
             ((itemA == itemB) && (itemA == testMatA && itemB == testMatB))) {
@@ -290,7 +305,7 @@ int Game::SearchRecipes(string itemA, string itemB) {
 
 // CalcScore
 // Calculates and displays the current
-// score for the player 
+// score for the player
 void Game::CalcScore() {
     int currentDepth = m_myDiver.CalcDepth();
     cout << endl << "Current Depth: " << currentDepth << endl;
