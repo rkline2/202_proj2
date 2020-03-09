@@ -16,6 +16,9 @@ using namespace std;
 
 //Constants (allowed to add more as needed)
 const int PROJ2_SIZE = 50;
+const int MIN_UNIQUE = 32; // Unique item index 
+const int INVALID = 1; // Invalid input
+const int TWO_VAL = 2; // Represents the same two index value
 
 // class - allowed to add HELPER functions only
 class Diver {
