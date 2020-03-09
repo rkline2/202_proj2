@@ -87,7 +87,6 @@ public:
         cout << " SSSS  UUUUU  BBBB   N    N  A   A  UUUUU    T    II  CCCC  A   A" << endl;
         cout << "*****************************************************************" << endl;
     }
-    void OneSec(int);
 private:
     Diver m_myDiver; //Player's Diver for the game
     Material m_materials[PROJ2_SIZE]; //All materials in the game (loaded from file)
